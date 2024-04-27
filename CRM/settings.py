@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import dj_database_url
-from decouple import config
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +28,7 @@ SECRET_KEY = 'django-insecure-v*!v#2to3%ep*hw1@c5m#t#1aa78_c#2i-7%^6=$k2exv3gq6j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app', 'localhost', '.now.sh']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -92,20 +93,23 @@ WSGI_APPLICATION = 'CRM.wsgi.application'
 # }
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'crm_database',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'crm_database',
+#         'USER': 'postgres',
+#         'PASSWORD': '1234',
+#         'HOST': 'localhost',
         
-    }
+#     }
+# }
+
+DATABASES = {
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgres://crm_database_t9zn_user:qejD3Krtzse9bX4GyjiYxySHfNnwhCax@dpg-comgdagcmk4c739l4q10-a.oregon-postgres.render.com/crm_database_t9zn',
+    )
 }
-
-database_url = '''postgres://default:hVe3ZoYpKs2n@ep-patient-mouse-a4cm6c50.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require'''
-
-DATABASES['default'] = dj_database_url.config()
 
 
 # Password validation
@@ -148,7 +152,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-import os
 
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
