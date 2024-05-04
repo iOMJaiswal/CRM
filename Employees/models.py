@@ -26,7 +26,8 @@ class Employee(models.Model):
     def __str__(self):
         return (f"{self.first_name},    {self.last_name},   {self.staff_id}")
     
-    
+
+# ! General  
 class Immigration(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
@@ -39,8 +40,7 @@ class Immigration(models.Model):
     country = models.CharField(max_length=100)
     
     def __str__(self):
-        return (f"{self.document_type}  ,  {self.document_number}")
-    
+        return (f"{self.document_type}  ,  {self.document_number}")    
     
 class Contact(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
@@ -72,7 +72,6 @@ class Qualification(models.Model):
     def __str__(self):
         return (f"{self.university}  ,  {self.education_level}")
     
-
 class WorkExperience(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
@@ -98,7 +97,97 @@ class BankAccount(models.Model):
         return (f"{self.account_title}  ,  {self.account_number}")
     
 
+
+# ! Set Salary
+
+class BasicSalary(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    month_year = models.DateField()
+    payslip_type = models.CharField(max_length=100)
+    basic_salary = models.CharField(max_length=100)
     
+    def __str__(self):
+        return (f"{self.payslip_type}")
+    
+class Allowances(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    month_year = models.DateField()
+    allowance_type = models.CharField(max_length=100)
+    allowance_title = models.CharField(max_length=100)
+    allowance_amount = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return (f"{self.allowance_title}")
+
+class Commissions(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    month_year = models.DateField()
+    commission_title = models.CharField(max_length=100)
+    commission_amount = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return (f"{self.commission_title}")
+
+class Loans(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    month_year = models.DateField()
+    loan_option = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    amount = models.CharField(max_length=100)
+    number_of_installment = models.CharField(max_length=100)
+    reason = models.TextField()
+    
+    def __str__(self):
+        return (f"{self.loan_option}  ,  {self.title}")
+    
+    
+class StatutoryDeductions(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    month_year = models.DateField()
+    deduction_option = models.CharField(max_length=100)
+    deduction_title = models.CharField(max_length=100)
+    deduction_amount = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return (f"{self.deduction_option}  ,  {self.deduction_title}")
+    
+    
+class OtherPayments(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    month_year = models.DateField()
+    title = models.CharField(max_length=100)
+    amount = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return (f"{self.title}")
+    
+class Overtime(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    month_year = models.DateField()
+    title = models.CharField(max_length=100)
+    number_of_days = models.CharField(max_length=100)
+    total_hours = models.CharField(max_length=100)
+    rate = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return (f"{self.title}")
+
+class SalaryPension(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    pension_type = models.CharField(max_length=100)
+    amount = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return (f"{self.pension_type}")
+        
     
 
     
