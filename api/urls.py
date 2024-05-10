@@ -17,7 +17,6 @@ Including another URLconf
 from django.urls import path
 from Company.views import *
 from Employees.views import *
-from Promotion.views import *
 from Client.views import *
 
 urlpatterns = [
@@ -36,13 +35,6 @@ urlpatterns = [
     path('edit-employee/<str:pk>', edit_employee, name="edit-employee"),
     path('delete-employee/<str:pk>', delete_employee, name="delete-employee"), 
     
-    # ! Promotion
-    path('get-promotion/', get_promotions, name="get-promotion"),
-    path('get-promotion/<str:pk>', get_promotion, name="get-promotion"),
-    path('create-promotion/', create_promotion, name="create-promotion"),
-    path('edit-promotion/<str:pk>', edit_promotion, name="edit-promotion"),
-    path('delete-promotion/<str:pk>', delete_promotion, name="delete-promotion"),
-     
     # ! Client
     path('get-client/', get_clients, name="get-client"),
     path('get-client/<str:pk>', get_client, name="get-client"),
