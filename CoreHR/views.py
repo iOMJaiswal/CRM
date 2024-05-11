@@ -379,7 +379,7 @@ def get_complaint(request, pk):
 @api_view(['GET'])
 def get_complaints_by_employee(request, pk):
     try:
-        complaint = Complaint.objects.filter(employee=pk)  
+        complaint = Complaint.objects.filter(complaint_against=pk)  
         serializer = ComplaintSerializer(complaint, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
@@ -450,7 +450,7 @@ def get_warning(request, pk):
 @api_view(['GET'])
 def get_warnings_by_employee(request, pk):
     try:
-        warning = Warning.objects.filter(employee=pk)  
+        warning = Warning.objects.filter(warning_to=pk)  
         serializer = WarningSerializer(warning, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
