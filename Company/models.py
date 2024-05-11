@@ -10,7 +10,7 @@ class Company(models.Model):
     registration_number = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
-    website = models.TextField(default=None)
+    website = models.TextField(default=None, null=True)
     location = models.CharField(max_length=100)
     tax_number = models.CharField(max_length=100)
     company_logo = models.FileField(upload_to="media/company_logo", null=True)

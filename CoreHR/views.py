@@ -17,6 +17,15 @@ def get_promotions(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except:
         return Response({'message': 'Something Went Wrong'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_promotions_by_employee(request, pk):
+    try:
+        promotion = Promotion.objects.filter(employee=pk)
+        serializer = PromotionSerializer(promotion, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'message': 'Something Went Wrong', 'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
     
 @api_view(['GET'])
 def get_promotion(request, pk):
@@ -80,6 +89,15 @@ def get_awards(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except:
         return Response({'message': 'Something Went Wrong'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_awards_by_employee(request, pk):
+    try:
+        award = Award.objects.filter(employee=pk)
+        serializer = AwardSerializer(award, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'message': 'Something Went Wrong', 'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
     
 @api_view(['GET'])
 def get_award(request, pk):
@@ -153,6 +171,16 @@ def get_travel(request, pk):
     except:
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+@api_view(['GET'])
+def get_travels_by_employee(request, pk):
+    try:
+        travel = Travel.objects.filter(employee=pk) 
+        serializer = TravelSerializer(travel, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'message': 'Something Went Wrong', 'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
+
+
 @api_view(['POST'])
 def create_travel(request):
     try:
@@ -215,6 +243,16 @@ def get_transfer(request, pk):
         return Response({'message': 'Transfer Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_transfers_by_employee(request, pk):
+    try:
+        transfer = Transfer.objects.filter(employee=pk)
+        serializer = TransferSerializer(transfer, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'message': 'Something Went Wrong', 'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
+
     
 @api_view(['POST'])
 def create_transfer(request):
@@ -341,6 +379,15 @@ def get_complaint(request, pk):
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['POST'])
+def get_complaints_by_employee(request, pk):
+    try:
+        complaint = Complaint.objects.filter(employee=pk)  
+        serializer = ComplaintSerializer(complaint, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'message': 'Something Went Wrong', 'error': str(e)}, status=status.HTTP_404_NOT_FOUND)    
+    
+@api_view(['POST'])
 def create_complaint(request):
     try:
         data = request.data
@@ -401,6 +448,16 @@ def get_warning(request, pk):
         return Response({'message': 'Warning Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def get_warnings_by_employee(request, pk):
+    try:
+        warning = Warning.objects.filter(employee=pk)  
+        serializer = WarningSerializer(warning, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'message': 'Something Went Wrong', 'error': str(e)}, status=status.HTTP_404_NOT_FOUND)    
+    
     
 @api_view(['POST'])
 def create_warning(request):

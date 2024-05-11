@@ -3,6 +3,7 @@ from uuid import uuid4
 import datetime
 from Company.models import Company
 from Employees.models import Employee
+from Client.models import Client
 
 class Promotion(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
@@ -68,8 +69,8 @@ class Resignation(models.Model):
 class Complaint(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    complaint_from = models.CharField(max_length=100)
-    complaint_against = models.CharField(max_length=100)
+    complaint_from = models.ForeignKey(Client, on_delete=models.CASCADE)
+    complaint_against = models.ForeignKey(Employee, on_delete=models.CASCADE)
     complaint_title = models.CharField(max_length=100)
     description = models.TextField()
     complaint_date = models.DateField(default=datetime.date.today)
@@ -78,7 +79,7 @@ class Complaint(models.Model):
 class Warning(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    warning_to = models.CharField(max_length=100)
+    warning_to = models.ForeignKey(Employee, on_delete=models.CASCADE)
     warning_type = models.CharField(max_length=100)
     subject = models.CharField(max_length=100)
     description = models.TextField()
@@ -89,7 +90,7 @@ class Warning(models.Model):
 class Termination(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    termination_to = models.CharField(max_length=100)
+    termination_to = models.ForeignKey(Employee, on_delete=models.CASCADE)
     termination_type = models.CharField(max_length=100)
     description = models.TextField()
     termination_date = models.DateField(default=datetime.date.today)
