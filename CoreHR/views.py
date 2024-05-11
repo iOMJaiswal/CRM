@@ -376,7 +376,7 @@ def get_complaint(request, pk):
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-@api_view(['POST'])
+@api_view(['GET'])
 def get_complaints_by_employee(request, pk):
     try:
         complaint = Complaint.objects.filter(employee=pk)  
@@ -447,7 +447,7 @@ def get_warning(request, pk):
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@api_view(['POST'])
+@api_view(['GET'])
 def get_warnings_by_employee(request, pk):
     try:
         warning = Warning.objects.filter(employee=pk)  
