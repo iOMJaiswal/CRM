@@ -180,7 +180,6 @@ def get_travels_by_employee(request, pk):
     except Exception as e:
         return Response({'message': 'Something Went Wrong', 'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
 
-
 @api_view(['POST'])
 def create_travel(request):
     try:
@@ -252,8 +251,7 @@ def get_transfers_by_employee(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'message': 'Something Went Wrong', 'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
-
-    
+ 
 @api_view(['POST'])
 def create_transfer(request):
     try:
@@ -457,8 +455,7 @@ def get_warnings_by_employee(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'message': 'Something Went Wrong', 'error': str(e)}, status=status.HTTP_404_NOT_FOUND)    
-    
-    
+       
 @api_view(['POST'])
 def create_warning(request):
     try:
@@ -563,6 +560,79 @@ def delete_termination(request, pk):
     
 
 
+
+
+# ! Specific to Employee Section 
+
+@api_view(['GET'])
+def get_trainings(request):
+    try:
+        training = Training.objects.all()
+        serializer = TrainingSerializer(training, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_training(request, pk):
+    try:
+        training = Training.objects.get(uuid=pk)
+        serializer = TrainingSerializer(training)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except training.DoesNotExist:
+        return Response({'message': 'Training Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def get_trainings_by_employee(request, pk):
+    try:
+        employee = Employee.objects.get(uuid=pk)
+        training = Training.objects.filter(employee=employee)
+        serializer = TrainingSerializer(training, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['POST'])
+def create_training(request):
+    try:
+        data = request.data
+        serializer = TrainingSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Training Created', 'data': serializer.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'message': 'Wrong data recieved', 'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['POST'])
+def edit_training(request, pk):
+    try:
+        training = Training.objects.get(uuid=pk)
+        serializer = TrainingSerializer(instance=training, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Training Updated', 'data': serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'Wrong data received', 'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    except Training.DoesNotExist:
+        return Response({'message': 'Training Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['POST'])
+def delete_training(request, pk):
+    try:
+        training = Training.objects.get(uuid = pk)
+        training.delete()
+        return Response({'message': 'Training Deleted'}, status=status.HTTP_200_OK)
+    except Training.DoesNotExist:
+        return Response({'message': 'Please enter valid uuid'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 

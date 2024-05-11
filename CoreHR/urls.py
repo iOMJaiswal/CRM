@@ -83,4 +83,16 @@ urlpatterns = [
     path('delete-termination/<str:pk>', delete_termination, name="delete-termination"),
     
     
+    
+    # ! Specific to Employee Section 
+    
+    # ? Training
+    path('get-training/', get_trainings, name="get-training"),
+    path('get-training/<str:pk>', get_training, name="get-training"),
+    path('get-training-by-employee/<str:pk>', get_trainings_by_employee, name="get-training-by-employee"),
+    path('create-training/', create_training, name="create-training"),
+    path('edit-training/<str:pk>', edit_training, name="edit-training"),
+    path('delete-training/<str:pk>', delete_training, name="delete-training"),
+    
+    
 ]

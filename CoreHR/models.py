@@ -97,6 +97,22 @@ class Termination(models.Model):
     notice_date = models.DateField(default=datetime.date.today)
     
     
+  
+  
+ 
+ 
+# ! Specific to Employee Section 
+
+class Training(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    training_type = models.CharField(max_length=100)
+    trainer = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField()
+      
+    
     
     
     

@@ -107,5 +107,23 @@ class TerminationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Termination
         fields = '__all__'
-        
-        
+
+
+# ! Specific to Employee Section 
+
+
+class TrainingSerializer(serializers.ModelSerializer):
+    
+    company_details = serializers.SerializerMethodField()
+    employee_details = serializers.SerializerMethodField()
+    
+    def get_company_details(self, obj):
+        return {'company_name' : obj.company.company_name}
+    
+    def get_employee_details(self, obj):
+        return {'employee_name' : f"{obj.employee.first_name} {obj.employee.last_name}"}
+     
+     
+    class Meta:
+        model = Training
+        fields = '__all__'   
