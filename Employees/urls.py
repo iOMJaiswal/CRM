@@ -8,6 +8,7 @@ urlpatterns = [
     
     path('general/get-immigration/', get_immigrations, name="get-immigration"),
     path('general/get-immigration/<str:pk>', get_immigration, name="get-immigration"),
+    path('general/get-immigration-by-employee/<str:pk>', get_immigration_by_employee, name="get-immigration-by-employee"),
     path('general/create-immigration/', create_immigration, name="create-immigration"),
     path('general/edit-immigration/<str:pk>', edit_immigration, name="edit-immigration"),
     path('general/delete-immigration/<str:pk>', delete_immigration, name="delete-immigration"),  
@@ -15,13 +16,23 @@ urlpatterns = [
     # ? Comtact APIs
     path('general/get-contact/', get_contacts, name="get-contact"),
     path('general/get-contact/<str:pk>', get_contact, name="get-contact"),
+    path('general/get-contact-by-employee/<str:pk>', get_contact_by_employee, name="get-contact-by-employee"),
     path('general/create-contact/', create_contact, name="create-contact"),
     path('general/edit-contact/<str:pk>', edit_contact, name="edit-contact"),
     path('general/delete-contact/<str:pk>', delete_contact, name="delete-contact"),
     
+    # ? Social Profile APIs
+    path('general/get-social-profile/', get_social_profiles, name="get-social-profile"),
+    path('general/get-social-profile/<str:pk>', get_social_profile, name="get-social-profile"),
+    path('general/get-social-profile-by-employee/<str:pk>', get_social_profile_by_employee, name="get-social-profile-by-employee"),
+    path('general/create-social-profile/', create_social_profile, name="create-social-profile"),
+    path('general/edit-social-profile/<str:pk>', edit_social_profile, name="edit-social-profile"),
+    path('general/delete-social-profile/<str:pk>', delete_social_profile, name="delete-social-profile"),
+    
     # ? Qualification APIs
     path('general/get-qualification/', get_qualifications, name="get-qualification"),
     path('general/get-qualification/<str:pk>', get_qualification, name="get-qualification"),
+    path('general/get-qualification-by-employee/<str:pk>', get_qualification_by_employee, name="get-qualification-by-employee"),
     path('general/create-qualification/', create_qualification, name="create-qualification"),
     path('general/edit-qualification/<str:pk>', edit_qualification, name="edit-qualification"),
     path('general/delete-qualification/<str:pk>', delete_qualification, name="delete-qualification"),
@@ -29,6 +40,7 @@ urlpatterns = [
     # ? Work Experience APIs
     path('general/get-work-experience/', get_work_experiences, name="get-work-experience"),
     path('general/get-work-experience/<str:pk>', get_work_experience, name="get-work-experience"),
+    path('general/get-work-experience-by-employee/<str:pk>', get_work_experience_by_employee, name="get-work-experience-by-employee"),
     path('general/create-work-experience/', create_work_experience, name="create-work-experience"),
     path('general/edit-work-experience/<str:pk>', edit_work_experience, name="edit-work-experience"),
     path('general/delete-work-experience/<str:pk>', delete_work_experience, name="delete-work-experience"),
@@ -36,6 +48,7 @@ urlpatterns = [
     # ? Bank Account APIs
     path('general/get-bank-account/', get_bank_accounts, name="get-bank-account"),
     path('general/get-bank-account/<str:pk>', get_bank_account, name="get-bank-account"),
+    path('general/get-bank-account-by-employee/<str:pk>', get_bank_account_by_employee, name="get-bank-account-by-employee"),
     path('general/create-bank-account/', create_bank_account, name="create-bank-account"),
     path('general/edit-bank-account/<str:pk>', edit_bank_account, name="edit-bank-account"),
     path('general/delete-bank-account/<str:pk>', delete_bank_account, name="delete-bank-account"),
@@ -47,6 +60,7 @@ urlpatterns = [
     # ? Basic Salary APIs
     path('set-salary/get-basic-salary/', get_basic_salaries, name="get-basic-salary"),
     path('set-salary/get-basic-salary/<str:pk>', get_basic_salary, name="get-basic-salary"),
+    path('set-salary/get-basic-salary-by-employee/<str:pk>', get_basic_salary_by_employee, name="get-basic-salary-by-employee"),
     path('set-salary/create-basic-salary/', create_basic_salary, name="create-basic-salary"),
     path('set-salary/edit-basic-salary/<str:pk>', edit_basic_salary, name="edit-basic-salary"),
     path('set-salary/delete-basic-salary/<str:pk>', delete_basic_salary, name="delete-basic-salary"),
@@ -54,6 +68,7 @@ urlpatterns = [
     # ? Allowance APIs
     path('set-salary/get-allowance/', get_allowances, name="get-allowance"),
     path('set-salary/get-allowance/<str:pk>', get_allowance, name="get-allowance"),
+    path('set-salary/get-allowance-by-employee/<str:pk>', get_allowances_by_employee, name="get-allowance-by-employee"),
     path('set-salary/create-allowance/', create_allowance, name="create-allowance"),
     path('set-salary/edit-allowance/<str:pk>', edit_allowance, name="edit-allowance"),
     path('set-salary/delete-allowance/<str:pk>', delete_allowance, name="delete-allowance"),
@@ -61,6 +76,7 @@ urlpatterns = [
     # ? Commission APIs
     path('set-salary/get-commission/', get_commissions, name="get-commission"),
     path('set-salary/get-commission/<str:pk>', get_commission, name="get-commission"),
+    path('set-salary/get-commission-by-employee/<str:pk>', get_commissions_by_employee, name="get-commission-by-employee"),
     path('set-salary/create-commission/', create_commission, name="create-commission"),
     path('set-salary/edit-commission/<str:pk>', edit_commission, name="edit-commission"),
     path('set-salary/delete-commission/<str:pk>', delete_commission, name="delete-commission"), 
@@ -68,13 +84,15 @@ urlpatterns = [
     # ? Loans APIs
     path('set-salary/get-loan/', get_loans, name="get-loan"),
     path('set-salary/get-loan/<str:pk>', get_loan, name="get-loan"),
+    path('set-salary/get-loan-by-employee/<str:pk>', get_loans_by_employee, name="get-loan-by-employee"),
     path('set-salary/create-loan/', create_loan, name="create-loan"),
     path('set-salary/edit-loan/<str:pk>', edit_loan, name="edit-loan"),
     path('set-salary/delete-loan/<str:pk>', delete_loan, name="delete-loan"),
     
     # ? StatutoryDeductions APIs
     path('set-salary/get-statutory-deduction/', get_statutory_deductions, name="get-statutory-deduction"),
-    path('set-salary/get-statutory-deduction/<str:pk>', get_statutory_deduction, name="get-statutory-deduction"),   
+    path('set-salary/get-statutory-deduction/<str:pk>', get_statutory_deduction, name="get-statutory-deduction"), 
+    path('set-salary/get-statutory-deduction-by-employee/<str:pk>', get_statutory_deductions_by_employee, name="get-statutory-deduction-by-employee"),  
     path('set-salary/create-statutory-deduction/', create_statutory_deduction, name="create-statutory-deduction"),
     path('set-salary/edit-statutory-deduction/<str:pk>', edit_statutory_deduction, name="edit-statutory-deduction"),
     path('set-salary/delete-statutory-deduction/<str:pk>', delete_statutory_deduction, name="delete-statutory-deduction"),
@@ -82,6 +100,7 @@ urlpatterns = [
     # ? OtherPayments APIs
     path('set-salary/get-other-payment/', get_other_payments, name="get-other-payment"),
     path('set-salary/get-other-payment/<str:pk>', get_other_payment, name="get-other-payment"),
+    path('set-salary/get-other-payment-by-employee/<str:pk>', get_other_payments_by_employee, name="get-other-payment-by-employee"),
     path('set-salary/create-other-payment/', create_other_payment, name="create-other-payment"),
     path('set-salary/edit-other-payment/<str:pk>', edit_other_payment, name="edit-other-payment"),
     path('set-salary/delete-other-payment/<str:pk>', delete_other_payment, name="delete-other-payment"),
@@ -89,6 +108,7 @@ urlpatterns = [
     # ? Overtime APIs
     path('set-salary/get-overtime/', get_overtimes, name="get-overtime"),
     path('set-salary/get-overtime/<str:pk>', get_overtime, name="get-overtime"),
+    path('set-salary/get-overtime-by-employee/<str:pk>', get_overtimes_by_employee, name="get-overtime-by-employee"),
     path('set-salary/create-overtime/', create_overtime, name="create-overtime"),
     path('set-salary/edit-overtime/<str:pk>', edit_overtime, name="edit-overtime"),
     path('set-salary/delete-overtime/<str:pk>', delete_overtime, name="delete-overtime"),
@@ -96,6 +116,7 @@ urlpatterns = [
     # ? SalaryPension APIs
     path('set-salary/get-salary-pension/', get_salary_pensions, name="get-salary-pension"),
     path('set-salary/get-salary-pension/<str:pk>', get_salary_pension, name="get-salary-pension"),
+    path('set-salary/get-salary-pension-by-employee/<str:pk>', get_salary_pensions_by_employee, name="get-salary-pension-by-employee"),
     path('set-salary/create-salary-pension/', create_salary_pension, name="create-salary-pension"),
     path('set-salary/edit-salary-pension/<str:pk>', edit_salary_pension, name="edit-salary-pension"),
     path('set-salary/delete-salary-pension/<str:pk>', delete_salary_pension, name="delete-salary-pension"),

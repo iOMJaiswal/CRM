@@ -2,16 +2,12 @@ from rest_framework import serializers
 from Employees.models import *
 
 class EmployeeSerializer(serializers.ModelSerializer):
-    company_details = serializers.SerializerMethodField()
-    
     class Meta:
         model = Employee
         fields = '__all__'
-        
-    def get_company_details(self, obj):
-        return {'company_name' : obj.company.company_name}
     
-    
+
+# ! General      
 class ImmigrationSerializer(serializers.ModelSerializer):
         
     class Meta:
@@ -25,6 +21,11 @@ class ContactSerializer(serializers.ModelSerializer):
         model = Contact
         fields = '__all__'
         
+class SocialProfileSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = SocialProfile
+        fields = '__all__'
 
 class QualificationSerializer(serializers.ModelSerializer):
     
@@ -44,7 +45,11 @@ class BankAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = BankAccount
         fields = '__all__'
-        
+     
+     
+
+
+# ! Set Salary    
 class BasicSalarySerializer(serializers.ModelSerializer):
     
     class Meta:

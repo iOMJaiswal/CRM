@@ -12,7 +12,15 @@ class Employee(models.Model):
     phone_number = models.CharField(max_length=100)
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=20)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    material_status = models.CharField(max_length=100)
+    permanent_address = models.CharField(max_length=100)
+    current_address = models.CharField(max_length=100)
+    father_name = models.CharField(max_length=100)
+    mother_name = models.CharField(max_length=100)
+    aadhar_number = models.CharField(max_length=100)
+    pan_number = models.CharField(max_length=100)
+    passport_number = models.CharField(max_length=100)
+    
     department = models.CharField(max_length=100)
     designation = models.CharField(max_length=100)
     office_shift = models.CharField(max_length=100)
@@ -57,6 +65,15 @@ class Contact(models.Model):
     
     def __str__(self):
         return (f"{self.relation}  ,  {self.name}")
+ 
+class SocialProfile(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    facebook_profile = models.CharField(max_length=100)
+    instagram_profile = models.CharField(max_length=100)
+    linkedin_profile = models.CharField(max_length=100)
+    twitter_profile = models.CharField(max_length=100)
+    whatsapp_number = models.CharField(max_length=100)
     
 class Qualification(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)

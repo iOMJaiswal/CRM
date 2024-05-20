@@ -10,8 +10,8 @@ def get_employees(request):
         employees = Employee.objects.all()
         serializer = EmployeeSerializer(employees, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    except :
-        return Response({'message': 'Something Went Wrong'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message': 'Something Went Wrong', 'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
 def get_employee(request, pk):
@@ -93,7 +93,16 @@ def get_immigration(request, pk):
         return Response({'message': 'Immigration Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
     except:
         return Response({'message' : 'Something Went Wrong'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+@api_view(['GET'])
+def get_immigration_by_employee(request, pk):
+    try:
+        imms = Immigration.objects.filter(employee=pk)
+        serializer = ImmigrationSerializer(imms, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+  
 @api_view(['POST'])
 def create_immigration(request):
     try:
@@ -159,7 +168,16 @@ def get_contact(request, pk):
         return Response({'message': 'Contact Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+@api_view(['GET'])
+def get_contact_by_employee(request, pk):
+    try:
+        contacts = Contact.objects.filter(employee=pk)
+        serializer = ContactSerializer(contacts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['POST'])
 def create_contact(request):
     try:
@@ -202,6 +220,80 @@ def delete_contact(request, pk):
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
+# ? Social Profile APIs
+
+@api_view(['GET'])
+def get_social_profiles(request):
+    try:
+        social_profiles = SocialProfile.objects.all()
+        serializer = SocialProfileSerializer(social_profiles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'message': 'Something Went Wrong', 'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_social_profile(request, pk):
+    try:
+        social_profile = SocialProfile.objects.get(uuid=pk)
+        serializer = SocialProfileSerializer(social_profile)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except social_profile.DoesNotExist:
+        return Response({'message': 'Social Profile Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_social_profile_by_employee(request, pk):
+    try:
+        social_profile = SocialProfile.objects.filter(employee__uuid=pk)
+        serializer = SocialProfileSerializer(social_profile, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except social_profile.DoesNotExist:
+        return Response({'message': 'Social Profile Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def create_social_profile(request):
+    try:
+        data = request.data
+        serializer = SocialProfileSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Social Profile Created', 'data': serializer.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'message': 'Wrong data recieved', 'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def edit_social_profile(request, pk):
+    try:
+        social_profile = SocialProfile.objects.get(uuid=pk)
+        serializer = SocialProfileSerializer(
+            instance=social_profile, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Social Profile Updated', 'data': serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'Wrong data received', 'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    except social_profile.DoesNotExist:
+        return Response({'message': 'Social Profile Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['POST'])
+def delete_social_profile(request, pk):
+    try:
+        social_profile = SocialProfile.objects.get(uuid = pk)
+        social_profile.delete()
+        return Response({'message': 'Social Profile Deleted'}, status=status.HTTP_200_OK)
+    except social_profile.DoesNotExist:
+        return Response({'message': 'Please enter valid uuid'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 # ? Qualification APIs
     
@@ -224,7 +316,18 @@ def get_qualification(request, pk):
         return Response({'message': 'Qualification Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+@api_view(['GET'])
+def get_qualification_by_employee(request, pk):
+    try:
+        qualification = Qualification.objects.filter(employee__uuid=pk)
+        serializer = QualificationSerializer(qualification, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except qualification.DoesNotExist:
+        return Response({'message': 'Qualification Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['POST'])
 def create_qualification(request):
     try:
@@ -290,7 +393,18 @@ def get_work_experience(request, pk):
         return Response({'message': 'Work Experience Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+@api_view(['GET'])
+def get_work_experience_by_employee(request, pk):
+    try:
+        work_experience = WorkExperience.objects.filter(employee__uuid=pk)
+        serializer = WorkExperienceSerializer(work_experience, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except work_experience.DoesNotExist:
+        return Response({'message': 'Work Experience Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+  
 @api_view(['POST'])
 def create_work_experience(request):
     try:
@@ -355,7 +469,18 @@ def get_bank_account(request, pk):
         return Response({'message': 'Bank Account Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+@api_view(['GET'])
+def get_bank_account_by_employee(request, pk):
+    try:
+        bank_account = BankAccount.objects.filter(employee__uuid=pk)
+        serializer = BankAccountSerializer(bank_account, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except bank_account.DoesNotExist:
+        return Response({'message': 'Bank Account Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+ 
 @api_view(['POST'])
 def create_bank_account(request):
     try:
@@ -415,6 +540,17 @@ def get_basic_salary(request, pk):
     try:
         basic_salary = BasicSalary.objects.get(uuid=pk)
         serializer = BasicSalarySerializer(basic_salary)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except basic_salary.DoesNotExist:
+        return Response({'message': 'Basic Salary Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_basic_salary_by_employee(request, pk):
+    try:
+        basic_salary = BasicSalary.objects.filter(employee__uuid=pk)
+        serializer = BasicSalarySerializer(basic_salary, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except basic_salary.DoesNotExist:
         return Response({'message': 'Basic Salary Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
@@ -482,7 +618,18 @@ def get_allowance(request, pk):
         return Response({'message': 'Allowance Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+@api_view(['GET'])
+def get_allowances_by_employee(request, pk):
+    try:
+        allowances = Allowances.objects.filter(employee__uuid=pk)
+        serializer = AllowancesSerializer(allowances, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except allowances.DoesNotExist:
+        return Response({'message': 'Allowance Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['POST'])
 def create_allowance(request):
     try:
@@ -541,6 +688,17 @@ def get_commission(request, pk):
         serializer = CommissionsSerializer(commission)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except commission.DoesNotExist:
+        return Response({'message': 'Commission Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_commissions_by_employee(request, pk):
+    try:
+        commissions = Commissions.objects.filter(employee__uuid=pk)
+        serializer = CommissionsSerializer(commissions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except commissions.DoesNotExist:
         return Response({'message': 'Commission Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -608,6 +766,17 @@ def get_loan(request, pk):
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET'])
+def get_loans_by_employee(request, pk):
+    try:
+        loans = Loans.objects.filter(employee__uuid=pk)
+        serializer = LoansSerializer(loans, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except loans.DoesNotExist:
+        return Response({'message': 'Loan Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['POST'])
 def create_loan(request):
     try:
@@ -666,6 +835,17 @@ def get_statutory_deduction(request, pk):
         serializer = StatutoryDeductionsSerializer(statutorydeduction)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except statutorydeduction.DoesNotExist:
+        return Response({'message': 'StatutoryDeduction Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_statutory_deductions_by_employee(request, pk):
+    try:
+        statutorydeductions = StatutoryDeductions.objects.filter(employee__uuid=pk)
+        serializer = StatutoryDeductionsSerializer(statutorydeductions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except statutorydeductions.DoesNotExist:
         return Response({'message': 'StatutoryDeduction Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -732,6 +912,17 @@ def get_other_payment(request, pk):
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET'])
+def get_other_payments_by_employee(request, pk):
+    try:
+        otherpayments = OtherPayments.objects.filter(employee__uuid=pk)
+        serializer = OtherPaymentsSerializer(otherpayments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except otherpayments.DoesNotExist:
+        return Response({'message': 'OtherPayment Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['POST'])
 def create_other_payment(request):
     try:
@@ -792,7 +983,18 @@ def get_overtime(request, pk):
         return Response({'message': 'Overtime Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+@api_view(['GET'])
+def get_overtimes_by_employee(request, pk):
+    try:
+        overtimes = Overtime.objects.filter(employee__uuid=pk)
+        serializer = OvertimeSerializer(overtimes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except overtimes.DoesNotExist:
+        return Response({'message': 'Overtime Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+  
 @api_view(['POST'])
 def create_overtime(request):
     try:
@@ -848,6 +1050,17 @@ def get_salary_pension(request, pk):
     try:
         salarypension = SalaryPension.objects.get(uuid=pk)
         serializer = SalaryPensionSerializer(salarypension)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except salarypension.DoesNotExist:
+        return Response({'message': 'SalaryPension Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message' : 'Something Went Wrong', 'error' : str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_salary_pensions_by_employee(request, pk):
+    try:
+        salarypension = SalaryPension.objects.filter(employee__uuid=pk)
+        serializer = SalaryPensionSerializer(salarypension, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except salarypension.DoesNotExist:
         return Response({'message': 'SalaryPension Not Found, Please Enter Valid UUID'}, status=status.HTTP_404_NOT_FOUND)
